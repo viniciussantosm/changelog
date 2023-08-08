@@ -16,6 +16,8 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         }
         
         $categories = $this->fetchCategoriesIds();
+
+        
         $this->obj = $this->createPostsCollection($categories);
         $this->saveCache();
         return Mage::app()->getCache()->load("changelog");
@@ -23,18 +25,37 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
 
     public function fetchCategoriesIds()
     {
-        $resource = fopen(sprintf("https://%s/wp-json/wp/v2/categories?per_page=100&orderby=id", $this->helper->getBlogUrl()), "r");
-        $content = stream_get_contents($resource);
-        fclose($resource);
+        $curl = curl_init();
 
+        $params = [
+            "per_page" => 100,
+            "orderby" => "id",
+        ];
+
+        $url = sprintf("https://%s/wp-json/wp/v2/categories?%s", $this->helper->getBlogUrl(), http_build_query($params));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($curl);
+        curl_close($curl);
+        
         return $this->treatCategories($content);
     }
 
     public function fetchPostsByCategory($category)
     {
-        $resource = fopen(sprintf("https://%s/wp-json/wp/v2/posts?categories=%s&orderby=modified&per_page=5", $this->helper->getBlogUrl(), $category), "r");
-        $content = stream_get_contents($resource);
-        fclose($resource);
+        $curl = curl_init();
+
+        $params = [
+            "per_page" => 5,
+            "orderby" => "modified",
+        ];
+
+        $url = sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->helper->getBlogUrl(), http_build_query($params));
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($curl);
+        curl_close($curl);
+
         $content = $this->treatPosts($content);
         return $content;
     }
@@ -118,9 +139,20 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
 
     public function fetchAuthors()
     {
-        $resource = fopen(sprintf("https://%s/wp-json/wp/v2/users", $this->helper->getBlogUrl()), "r", false, $this->buildWpContext());
-        $content = json_decode(stream_get_contents($resource), true);
-        fclose($resource);
+        $curl = curl_init();
+
+        $url = sprintf("https://%s/wp-json/wp/v2/users", $this->helper->getBlogUrl());
+        curl_setopt($curl, CURLOPT_URL, $url);
+
+        $helper = Mage::helper("changelog/config");
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            "Authorization: {$helper->getWpUser()}:{$helper->getWpPass()}",
+            "Content-Type: application/json",
+         ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $content = curl_exec($curl);
+        curl_close($curl);
+        $content = json_decode($content, true);
 
         if(is_array($content)) {
             return $content;
@@ -138,19 +170,5 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         }
 
         return $authorsCollection;
-    }
-
-    public function buildWpContext()
-    {
-        $helper = Mage::helper("changelog/config");
-        $options = ["http" => [
-            "method" => "GET",
-            "header" => [
-                "Authorization: {$helper->getWpUser()}:{$helper->getWpPass()}",
-                "Content-Type: application/json"
-                ]
-            ]
-        ];
-        return stream_context_create($options);
     }
 }

@@ -11,12 +11,12 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
 
     protected function _prepareCollection()
     {
-        // $result = Mage::getModel("changelog/post_fetch")->fetchAuthor();
+        // $result = Mage::getModel("changelog/post_fetch")->fetchPosts();
+        // echo "<pre>";
+        // print_r(unserialize($collection));
+        // exit();
         // $helper = Mage::helper("changelog/config");
         // $ActiveColumns = $helper->getActiveColumns();
-        // echo "<pre>";
-        // print_r(explode(",", $ActiveColumns));
-        // exit();
 
         $helper = Mage::helper("changelog/config");
         if(!$helper->isAllowed()) {
