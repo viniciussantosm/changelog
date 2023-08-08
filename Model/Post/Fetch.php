@@ -11,12 +11,16 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
 
     public function fetchPosts()
     {
+        // echo unserialize(Mage::app()->getCache()->load("changelog_url")) . PHP_EOL;
+        // echo $this->helper->getBlogUrl();
+        // echo $this->helper->getActiveCategory();
+        // exit();
+        
         if($this->checkCache()) {
             return Mage::app()->getCache()->load("changelog");
         }
-        
-        $categories = $this->fetchCategoriesIds();
 
+        $categories = $this->fetchCategoriesIds();
         
         $this->obj = $this->createPostsCollection($categories);
         $this->saveCache();
@@ -79,11 +83,20 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
     {
         $cache = Mage::app()->getCache();
         $cache->save(serialize($this->obj),"changelog", ["CHANGELOG"], 3600);
+        $cache->save(serialize($this->helper->getActiveCategory()),"changelog_cat", ["CHANGELOG_CAT"], 3600);
+        $cache->save(serialize($this->helper->getBlogUrl()),"changelog_url", ["CHANGELOG_URL"], 3600);
     }
 
     public function checkCache()
     {
-        return false;
+        if(unserialize(Mage::app()->getCache()->load("changelog_cat")) !== $this->helper->getActiveCategory()){
+            return false;
+        }
+
+        if(unserialize(Mage::app()->getCache()->load("changelog_url")) !== $this->helper->getBlogUrl()){
+            return false;
+        }
+        // return false;
         return Mage::app()->getCache()->load("changelog") ? true : false;
     }
 
