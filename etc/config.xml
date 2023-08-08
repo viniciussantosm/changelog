@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BIS2BIS_Changelog>
+            <version>1.0.0</version>
+        </BIS2BIS_Changelog>
+    </modules>
+    <global>
+        <blocks>
+            <changelog>
+                <class>BIS2BIS_Changelog_Block</class>
+            </changelog>
+            <adminhtml>
+                <rewrite>
+                    <dashboard>BIS2BIS_Changelog_Block_Adminhtml_Rewrite_Dashboard</dashboard>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <cache>
+            <types>
+                <custom translate="label,description" module="module">
+                    <label>Changelog</label>
+                    <description>Changelog module cache</description>
+                    <tags>CHANGELOG</tags>
+                </custom >
+            </types>
+        </cache>
+        <helpers>
+            <changelog>
+                <class>BIS2BIS_Changelog_Helper</class>
+            </changelog>
+        </helpers>
+        <models>
+            <changelog>
+                <class>BIS2BIS_Changelog_Model</class>
+            </changelog>
+        </models>
+    </global>
+    <adminhtml>
+        <translate>
+            <modules>
+                <BIS2BIS_Changelog>
+                    <files>
+                        <default>BIS2BIS_Changelog.csv</default>
+                    </files>
+                </BIS2BIS_Changelog>
+            </modules>
+        </translate>
+    </adminhtml>
+</config>

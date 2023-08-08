@@ -1,0 +1,14 @@
+{
+    "name": "BIS2BIS/Changelog",
+    "authors": [
+        {
+            "name": "Bis2bis",
+            "email": "suporte@bis2bis.com.br"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "."
+        ]
+    }
+}

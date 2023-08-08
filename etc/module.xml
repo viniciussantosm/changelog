@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <BIS2BIS_Changelog>
+            <active>true</active>
+            <codePool>vendor</codePool>
+        </BIS2BIS_Changelog>
+    </modules>
+</config>
