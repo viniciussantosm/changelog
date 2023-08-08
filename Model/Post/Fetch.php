@@ -9,7 +9,7 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         $this->helper = Mage::helper("changelog/config");
     }
 
-    public function fetchPosts()
+    public function fetchPosts(BIS2BIS_Changelog_Model_Category_Fetch $categoryFetch, BIS2BIS_Changelog_Model_Author_Fetch $authorFetch)
     {
         // echo unserialize(Mage::app()->getCache()->load("changelog_url")) . PHP_EOL;
         // echo $this->helper->getBlogUrl();
@@ -20,47 +20,17 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
             return Mage::app()->getCache()->load("changelog");
         }
 
-        $categories = $this->fetchCategoriesIds();
+        $categories = $categoryFetch->fetchCategoriesIds();
         
-        $this->obj = $this->createPostsCollection($categories);
+        $this->obj = $this->createPostsCollection($categories, $authorFetch);
         $this->saveCache();
         return Mage::app()->getCache()->load("changelog");
     }
 
-    public function fetchCategoriesIds()
-    {
-        $curl = curl_init();
-
-        $params = [
-            "per_page" => 100,
-            "orderby" => "id",
-        ];
-
-        $url = sprintf("https://%s/wp-json/wp/v2/categories?%s", $this->helper->getBlogUrl(), http_build_query($params));
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $content = curl_exec($curl);
-        curl_close($curl);
-        
-        return $this->treatCategories($content);
-    }
-
     public function fetchPostsByCategory($category)
     {
-        $curl = curl_init();
-
-        $params = [
-            "per_page" => 5,
-            "orderby" => "modified",
-        ];
-
-        $url = sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->helper->getBlogUrl(), http_build_query($params));
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $content = curl_exec($curl);
-        curl_close($curl);
-
-        $content = $this->treatPosts($content);
+        $response = $this->curlHandler($category);
+        $content = $this->treatPosts($response);
         return $content;
     }
 
@@ -96,7 +66,7 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         if(unserialize(Mage::app()->getCache()->load("changelog_url")) !== $this->helper->getBlogUrl()){
             return false;
         }
-        // return false;
+
         return Mage::app()->getCache()->load("changelog") ? true : false;
     }
 
@@ -105,24 +75,10 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         return ucwords($title);
     }
 
-    public function treatCategories($resource)
-    {
-        $categories = json_decode($resource, true);
-        $categoriesData = [];
-        foreach($categories as $category) {
-            $categoriesData[$category["id"]] = [
-                        "name" => $category["name"],
-                        "link" => $category["link"],
-                    ];
-        }
-
-        return $categoriesData;
-    }
-
-    public function createPostsCollection($categories)
+    public function createPostsCollection($categories, BIS2BIS_Changelog_Model_Author_Fetch $authorFetch)
     {
         $postsCollection = new Varien_Data_Collection();
-        $authors = $this->getAuthors();
+        $authors = $authorFetch->getAuthors();
         foreach($categories as $id => $categoryData) {
             $posts = $this->fetchPostsByCategory($id);
 
@@ -150,38 +106,22 @@ class BIS2BIS_Changelog_Model_Post_Fetch {
         return $postsCollection;
     }
 
-    public function fetchAuthors()
+    function curlHandler($category)
     {
         $curl = curl_init();
 
-        $url = sprintf("https://%s/wp-json/wp/v2/users", $this->helper->getBlogUrl());
+        $params = [
+            "per_page" => 5,
+            "orderby" => "modified",
+            "categories" => $category,
+        ];
+
+        $url = sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->helper->getBlogUrl(), http_build_query($params));
         curl_setopt($curl, CURLOPT_URL, $url);
-
-        $helper = Mage::helper("changelog/config");
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            "Authorization: {$helper->getWpUser()}:{$helper->getWpPass()}",
-            "Content-Type: application/json",
-         ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        $content = curl_exec($curl);
+        $response = curl_exec($curl);
         curl_close($curl);
-        $content = json_decode($content, true);
 
-        if(is_array($content)) {
-            return $content;
-        }
-
-        return null;
-    }
-
-    public function getAuthors()
-    {
-        $authors = $this->fetchAuthors();
-        $authorsCollection = new Varien_Data_Collection();
-        foreach($authors as $author) {
-            $authorsCollection->addItem(new Varien_Object($author));
-        }
-
-        return $authorsCollection;
+        return $response;
     }
 }

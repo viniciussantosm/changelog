@@ -4,7 +4,8 @@ class BIS2BIS_Changelog_Model_Post_PostCommand {
 
     public function execute()
     {
-        $collection = Mage::getModel("changelog/post_fetch")->fetchPosts();
+        $authorFetch = new BIS2BIS_Changelog_Model_Author_Fetch();
+        $collection = Mage::getModel("changelog/post_fetch")->fetchPosts($authorFetch);
         return $this->prepareCollection($collection);
     }
 
