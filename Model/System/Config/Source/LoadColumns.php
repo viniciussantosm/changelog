@@ -5,6 +5,11 @@ class BIS2BIS_Changelog_Model_System_Config_Source_LoadColumns {
     public function toOptionArray()
     {
         $collection = Mage::getModel("changelog/post_fetch")->fetchPosts();
+        
+        if(!$collection) {
+            return array();
+        }
+        
         return $this->collectionToColumns($collection);
     }
 
