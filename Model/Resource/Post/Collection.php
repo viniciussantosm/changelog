@@ -21,6 +21,10 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
         }
 
         $items = $this->fetch();
+        if(!is_array($items)) {
+            return $items;
+        }
+
         foreach ($items as $item) {
             $this->addItem((new BIS2BIS_Changelog_Model_Post($item)));
         }
@@ -158,12 +162,13 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
         //     $params,
         //     $this->_filters
         // );
-        $url = sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->getConfig()->getBlogUrl(), http_build_query($params));
-        curl_setopt($curl, CURLOPT_URL, $url);
+
+        curl_setopt($curl, CURLOPT_URL, sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->getConfig()->getBlogUrl(), http_build_query($params)));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($curl);
         curl_close($curl);
 
+        
         return json_decode($response, 1);
     }
 }
