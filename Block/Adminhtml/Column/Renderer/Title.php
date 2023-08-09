@@ -14,7 +14,7 @@ class BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_Title extends Mage_Admin
             $columnData .= '<a href="'.$item[1].'" target="_blank">'.$item[0].'</a> / ';
         }
         
-        return '<a href="'.$link.'" target="_blank">'. ucwords($title).'</a><div>'. $this->treatDate($modified) .'</div><div>'. trim($columnData, " / ") .'</div>';
+        return '<a href="'.$link.'" target="_blank">'. ucwords($title).'</a><div><b>'. $this->treatDate($modified) .'</b></div><div>'. trim($columnData, " / ") .'</div>';
     }
 
     public function treatDate($date)
