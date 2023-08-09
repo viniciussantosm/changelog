@@ -9,7 +9,8 @@ class BIS2BIS_Changelog_Helper_Config extends Mage_Core_Helper_Abstract {
 
     public function getActiveCategory()
     {
-        return Mage::getStoreConfig("changelog/settings/category");
+        $activeCategory = explode(",", Mage::getStoreConfig("changelog/settings/category"));
+        return $activeCategory;
     }
 
     public function getBlogUrl()
