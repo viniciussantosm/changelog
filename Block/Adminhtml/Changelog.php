@@ -5,24 +5,37 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
     public function __construct()
     {
         parent::__construct();
-        $this->setId('changelog');
         $this->_emptyText = Mage::helper('changelog')->__('No posts found.');
     }
 
     protected function _prepareCollection()
     {
-        // $result = Mage::getModel("changelog/post_fetch")->fetchPosts();
-        // echo "<pre>";
-        // print_r(unserialize($collection));
-        // exit();
-        // $helper = Mage::helper("changelog/config");
-        // $ActiveColumns = $helper->getActiveColumns();
-
         $helper = Mage::helper("changelog/config");
         if(!$helper->isAllowed()) {
             return parent::_prepareCollection();
         }
-        $collection = Mage::getModel("changelog/post_postCommand")->execute();
+        
+        // Fetch author collection
+        $authorCollection = Mage::getModel("changelog/resource_author_collection");
+        $authorCollection->loadData();
+
+        // Fetch post collection
+        $collection = Mage::getModel("changelog/resource_post_collection");
+        $collection->loadData();
+        
+        // Fetch category collection
+        $categoryCollection = Mage::getModel("changelog/resource_category_collection");
+        $categoryCollection->loadData();
+
+        foreach($collection as $post) {
+            $authorData = $this->prepareAuthor($post->getAuthor(), $authorCollection);
+            $post->setAuthor($authorData);
+            $categoryData = $this->prepareCategories($post->getCategories(), $categoryCollection);
+            $post->setCategories($categoryData);
+            $post->setTitle($post->getTitle()["rendered"]);
+        }
+
+        $collection->setOrder("modified", "DESC");
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -34,23 +47,12 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
         $data = explode(",", $helper->getActiveColumns());
         
         foreach($data as $index => $column) {
-
-            if($column === 'modified') {
-                $this->addColumn($column, array(
-                    'header'    => $this->__(ucfirst($column)),
-                    'sortable'  => false,
-                    'index'     => $column,
-                    'type' => 'datetime'
-                ));
-
-                continue;
-            }
-
             $this->addColumn($column, array(
                 'header'    => $this->__(ucfirst($column)),
                 'sortable'  => false,
                 'index'     => $column,
-                'renderer' => "BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_$column"
+                'renderer' => "BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_$column",
+                'header_css_class'=>'a-center'
             ));
         }
 
@@ -60,9 +62,26 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
         return parent::_prepareColumns();
     }
 
-    public function getRowUrl($row)
+    public function prepareCategories($categories, $collection)
     {
-        // return $this->getUrl('*/catalog_search/edit', array('id'=>$row->getId()));
-        return false;
+        $categoryInfo = array();
+        foreach($categories as $category) {
+            $category = $collection->getItemByColumnValue("id", $category);
+            $categoryInfo[] = [$category->getName(), $category->getLink()];
+        }
+
+        return $categoryInfo;
+    }
+
+    public function prepareAuthor($authorId, $collection)
+    {
+        $author = $collection->getItemByColumnValue("id", $authorId);
+        $authorInfo = array();
+        if($author) {
+            $authorInfo[] = [$author->getName(), $author->getLink()];
+            return $authorInfo;
+        }
+
+        return null;
     }
 }
