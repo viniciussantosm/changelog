@@ -4,9 +4,23 @@ class BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_Title extends Mage_Admin
 
     public function render(Varien_Object $row)
     {
-        $rowData = $row->getData();
         $title =  $row->getTitle();
-        $link =  $rowData->getLink();
-        return '<a href="'.$link.'" target="_blank">'. ucwords($title).'</a>';
+        $link =  $row->getLink();
+        $modified = $row->getModified();
+
+        $category = $row->getCategories();
+        $columnData = "";
+        foreach($category as $item) {
+            $columnData .= '<a href="'.$item[1].'" target="_blank">'.$item[0].'</a> / ';
+        }
+        
+        return '<a href="'.$link.'" target="_blank">'. ucwords($title).'</a><div>'. $this->treatDate($modified) .'</div><div>'. trim($columnData, " / ") .'</div>';
+    }
+
+    public function treatDate($date)
+    {
+        $timestamp = strtotime($date);
+        $finalDate = date("H:i:s d/m/Y", $timestamp);
+        return $finalDate;
     }
 }

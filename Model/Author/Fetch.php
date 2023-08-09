@@ -39,7 +39,7 @@ class BIS2BIS_Changelog_Model_Author_Fetch {
         curl_setopt($curl, CURLOPT_URL, $url);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-            "Authorization: {$this->helper->getWpUser()}:{$this->$helper->getWpPass()}",
+            "Authorization: {$this->helper->getWpUser()}:{$this->helper->getWpPass()}",
             "Content-Type: application/json",
          ));
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
