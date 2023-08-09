@@ -8,12 +8,12 @@
     </tabs>
     <sections>
         <changelog translate="label" module="adminhtml">
-            <label>Settings</label>
-            <sort_order>10</sort_order>
+            <label>Changelog</label>
+            <sort_order>1200</sort_order>
             <show_in_default>1</show_in_default>
             <show_in_store>1</show_in_store>
             <show_in_website>1</show_in_website>
-            <tab>changelog</tab>
+            <tab>general</tab>
             <groups>
                 <settings translate="label">
                     <label>Settings</label>
