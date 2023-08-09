@@ -1,14 +1,14 @@
 <?php
-class BIS2BIS_Changelog_Model_System_Config_Source_LoadCategories extends BIS2BIS_Changelog_Model_Category_Fetch
+class BIS2BIS_Changelog_Model_System_Config_Source_LoadCategories
 {
     public function toOptionArray()
     {
-        $categories = $this->fetchCategoriesIds();
+        $collection = Mage::getModel("changelog/resource_category_collection");
+        $collection->loadData();
         $selectData = [];
-        foreach($categories as $id => $categoryData) {
-            $selectData[] = ["value" => $id, "label" => $categoryData["name"]];
+        foreach($collection as $category) {
+            $selectData[] = ["value" => $category->getId(), "label" => $category->getName()];
         }
-        
         return $selectData;
     }
 }
