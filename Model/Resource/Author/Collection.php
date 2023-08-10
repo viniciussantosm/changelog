@@ -7,7 +7,7 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
      *
      * @var string
      */
-    protected $_itemObjectClass = BIS2BIS_Changelog_Model_Post::class;
+    protected $_itemObjectClass = BIS2BIS_Changelog_Model_Author::class;
 
     /**
      * Load data
@@ -22,7 +22,7 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
 
         $items = $this->fetch();
         foreach ($items as $item) {
-            $this->addItem((new BIS2BIS_Changelog_Model_Post($item)));
+            $this->addItem((new BIS2BIS_Changelog_Model_Author($item)));
         }
         $this->_renderFilters();
         $this->_setIsLoaded(true);

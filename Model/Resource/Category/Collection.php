@@ -7,7 +7,7 @@ class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_C
      *
      * @var string
      */
-    protected $_itemObjectClass = BIS2BIS_Changelog_Model_Post::class;
+    protected $_itemObjectClass = BIS2BIS_Changelog_Model_Category::class;
 
     /**
      * Load data
@@ -22,7 +22,7 @@ class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_C
 
         $items = $this->fetch();
         foreach ($items as $item) {
-            $this->addItem((new BIS2BIS_Changelog_Model_Post($item)));
+            $this->addItem((new BIS2BIS_Changelog_Model_Category($item)));
         }
         $this->_renderFilters();
         $this->_setIsLoaded(true);
