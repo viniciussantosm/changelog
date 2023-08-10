@@ -32,4 +32,9 @@ class BIS2BIS_Changelog_Helper_Config extends Mage_Core_Helper_Abstract {
     {
         return Mage::getStoreConfig("changelog/settings/gridoptions");
     }
+
+    public function getCacheKey($name)
+    {
+        return "changelog" . ucwords($name);
+    }
 }
