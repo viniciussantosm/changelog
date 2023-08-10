@@ -10,20 +10,13 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
 
     protected function _prepareCollection()
     {
-        $data = Mage::helper("changelog/data");
-        $collection = $data->getResource("post");
-        $authorCollection = $data->getResource("author");
-        $categoryCollection = $data->getResource("category");
-        
-        foreach($collection as $post) {
-            $authorData = $this->prepareAuthor($post->getAuthor(), $authorCollection);
-            $post->setAuthor($authorData);
-            $categoryData = $this->prepareCategories($post->getCategories(), $categoryCollection);
-            $post->setCategories($categoryData);
-            $post->setTitle($post->getTitle()["rendered"]);
-        }
+        $collection = Mage::getModel("changelog/post")
+            ->getCollection()
+            ->addFilter("per_page", 5)
+            ->addFilter("categories", implode(",", $this->getConfig()->getActiveCategory()))
+            ->addFilter("orderby", "modified")
+            ->setOrder("modified", "DESC");
 
-        $collection->setOrder("modified", "DESC");
         $this->setCollection($collection);
 
         return parent::_prepareCollection();
@@ -71,5 +64,13 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
         }
 
         return null;
+    }
+
+    /**
+     * @return BIS2BIS_Changelog_Helper_Config
+     */
+    public function getConfig()
+    {
+        return Mage::helper("changelog/config");
     }
 }

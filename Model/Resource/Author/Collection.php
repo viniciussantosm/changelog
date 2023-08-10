@@ -83,8 +83,8 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
  
                 // If it's not an array, we use the search term to compare with the value of our item
                 if(!is_array($item->getGeneric($keyFilter))){
-                    if(!(strpos(strtolower($item->getGeneric($keyFilter)),strtolower($valueFilter)) !== FALSE)){
-                        unset($this->_items[$key]); 
+                    if((strpos(strtolower((string)$item->getGeneric($keyFilter)),strtolower((string)$valueFilter)) !== FALSE)){
+                        unset($this->_items[$key]);
                         // If search term not founded, unset the item to 
                         //not display it!
                     }
@@ -148,7 +148,18 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
     {
         $curl = curl_init();
 
-        $url = sprintf("https://%s/wp-json/wp/v2/users", $this->getConfig()->getBlogUrl());
+        $params =[];
+
+        foreach($this->_filters as $value) {
+            $params[$value->getField()] = $value->getValue();
+        }
+        
+        $url = sprintf(
+            "https://%s/wp-json/wp/v2/users%s",
+            $this->getConfig()->getBlogUrl(),
+            empty($params) ? "" : "?" . http_build_query($params)
+        );
+
         curl_setopt($curl, CURLOPT_URL, $url);
 
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
@@ -158,7 +169,27 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $content = curl_exec($curl);
         curl_close($curl);
-
+        
         return json_decode($content, true);
+    }
+
+    public function getResource()
+    {
+        if($this->checkCache("authorCollection")) {
+            return unserialize(Mage::app()->getCache()->load("authorCollection"));
+        }
+        $resource = $this->loadData();
+        $this->saveCache($resource, "authorCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        return $resource;
+    }
+    
+    public function saveCache($data, $key, $tag)
+    {
+        Mage::app()->getCache()->save(serialize($data), $key, [$tag], 3600);
+    }
+
+    public function checkCache($key)
+    {
+        return Mage::app()->getCache()->load($key);
     }
 }

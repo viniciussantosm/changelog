@@ -152,23 +152,43 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
     {
         $curl = curl_init();
 
-        $params = [
-            // "per_page" => $this->getPageSize(),
-            "per_page" => 100,
-            "categories" => implode(",", $this->getConfig()->getActiveCategory()),
-            "orderby" => "modified",
-        ];
-        // $params = array_merge(
-        //     $params,
-        //     $this->_filters
-        // );
+        $params = [];
+        foreach($this->_filters as $value) {
+            $params[$value->getField()] = $value->getValue();
+        }
 
-        curl_setopt($curl, CURLOPT_URL, sprintf("https://%s/wp-json/wp/v2/posts?%s", $this->getConfig()->getBlogUrl(), http_build_query($params)));
+        $url = sprintf(
+            "https://%s/wp-json/wp/v2/posts%s",
+            $this->getConfig()->getBlogUrl(),
+            empty($params) ? "" : "?" . http_build_query($params)
+        );
+
+        curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $response = curl_exec($curl);
         curl_close($curl);
 
         
         return json_decode($response, 1);
+    }
+
+    public function getResource()
+    {
+        if($this->checkCache("postCollection")) {
+            return unserialize(Mage::app()->getCache()->load("postCollection"));
+        }
+        $resource = $this->loadData();
+        $this->saveCache($resource, "postCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        return $resource;
+    }
+    
+    public function saveCache($data, $key, $tag)
+    {
+        Mage::app()->getCache()->save(serialize($data), $key, [$tag], 3600);
+    }
+
+    public function checkCache($key)
+    {
+        return Mage::app()->getCache()->load($key);
     }
 }

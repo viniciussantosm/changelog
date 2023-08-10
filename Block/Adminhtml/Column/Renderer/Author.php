@@ -4,9 +4,9 @@ class BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_Author extends Mage_Admi
 
     public function render(Varien_Object $row)
     {
-        $author = $row->getAuthor();
-        if(is_array($author)) {
-            $columnData = '<p class="a-center"><a href="'.$author[1].'" target="_blank">'.ucwords($author[0]).'</a></p>';
+        echo "<pre>";
+        if($row->getData('yoast_head_json')) {
+            $columnData = '<p class="a-center">'.ucwords($row->getData('yoast_head_json/author')).'</p>';
             return $columnData;
         }
         
