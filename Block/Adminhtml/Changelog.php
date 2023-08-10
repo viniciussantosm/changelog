@@ -10,23 +10,11 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
 
     protected function _prepareCollection()
     {
-        $helper = Mage::helper("changelog/config");
-        if(!$helper->isAllowed()) {
-            return parent::_prepareCollection();
-        }
+        $data = Mage::helper("changelog/data");
+        $collection = $data->getResource("post");
+        $authorCollection = $data->getResource("author");
+        $categoryCollection = $data->getResource("category");
         
-        // Fetch author collection
-        $authorCollection = Mage::getModel("changelog/resource_author_collection");
-        $authorCollection->loadData();
-
-        // Fetch post collection
-        $collection = Mage::getModel("changelog/resource_post_collection");
-        $collection->loadData();
-        
-        // Fetch category collection
-        $categoryCollection = Mage::getModel("changelog/resource_category_collection");
-        $categoryCollection->loadData();
-
         foreach($collection as $post) {
             $authorData = $this->prepareAuthor($post->getAuthor(), $authorCollection);
             $post->setAuthor($authorData);
@@ -78,7 +66,7 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
         $author = $collection->getItemByColumnValue("id", $authorId);
         $authorInfo = array();
         if($author) {
-            $authorInfo[] = [$author->getName(), $author->getLink()];
+            $authorInfo = [$author->getName(), $author->getLink()];
             return $authorInfo;
         }
 
