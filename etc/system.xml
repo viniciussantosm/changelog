@@ -43,7 +43,7 @@
                         </category>
                         <url translate="label">
                             <label>Url</label>
-                            <comment>www.blog.com</comment>
+                            <comment>https://www.blog.com</comment>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_store>1</show_in_store>
