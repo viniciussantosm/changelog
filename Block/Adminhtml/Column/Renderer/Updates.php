@@ -14,19 +14,16 @@ class BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_Updates extends Mage_Adm
         $rowContent = $row->getData("content/rendered");
 
         if(strlen($rowContent) >= 300) {
-            $rowContent = substr($rowContent, 0, 500);
-            $rowContent = explode(" ", $rowContent);
-            array_pop($rowContent);
-            $rowContent = implode(" ", $rowContent);
-            $rowContent .= "...";
+            // $rowContent = substr($rowContent, 0, 500);
+            $rowContent = explode(PHP_EOL, $rowContent);
+            $rowContent = $rowContent[0];
         }
 
-        $showMoreLink = sprintf(' <a class="changelog-category-link" href="%s" target="_blank">Continue lendo</a>',
+        $showMoreLink = sprintf('<br><a class="changelog-category-link" href="%s" target="_blank">Continue lendo</a>',
             $row->getLink());
         
         return sprintf(
-            '<div class="changelog-title-container"><a class="changelog-title" href="%s" target="_blank">%s</a></div><div class="changelog-content-container"><div class="changelog-content">%s%s</div></div><div class="changelog-info-container"><div class="changelog-category-container">%s</div><div class="changelog-date-container"><b>%s</b></div></div>',
-            $row->getLink(),
+            '<div class="changelog-title-container"><p class="changelog-title">%s</p></div><div class="changelog-content-container"><div class="changelog-content">%s%s</div></div><div class="changelog-info-container"><div class="changelog-category-container">%s</div><div class="changelog-date-container"><b>%s</b></div></div>',
             ucwords($row->getData("title/rendered")),
             $rowContent,
             $showMoreLink,

@@ -3,59 +3,38 @@
     table-layout: fixed;
 }
 
-#changelog_table tbody tr {
+tbody tr td {
+    padding: 0!important;
     cursor: auto;
 }
 
-#changelog_table tbody tr:hover {
+tbody tr td:hover {
     background: transparent;
 }
 
-#changelog_table tbody tr:hover  .changelog-content-container{
-    height: 100px;
-    padding: 1em;
-    transition: all .5s ease-in-out;
-}
-
-#changelog_table tbody tr:hover .changelog-info-container {
-    padding-top: 1.5em;
-}
-
-#changelog_table tbody tr:hover {
-}
-
 .changelog-title-container {
-    text-align: center;
-    margin: 1.5em 0 1em 0;
+    text-align: left;
+    background-color: #ac2790;
+    margin: 0;
+    padding: 1.5em 0 1em 0;
 }
 
 .changelog-title {
     padding-left: 1em;
-    text-decoration: underline;
-    text-transform: uppercase;
-    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-weight: 400;
     font-size: 1rem;
-}
-
-.changelog-title:hover {
-    text-decoration: none;
-    color: #58bdd1;
-    transition: all .3s ease-out;
-}
-
-.changelog-title:hover {
-    text-decoration: none;
+    color: #fff;
 }
 
 .changelog-content-container {
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 0em;
+    padding: 1em;
     font-size: .9rem;
     max-height: 100px;
-    height: 0px;
     margin: 0 auto;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px;
     border-radius: 10px;
 }
 
@@ -88,7 +67,7 @@
 .changelog-info-container {
     display: flex;
     justify-content: space-between;
-    padding-top: 0em;
+    padding-top: .5em;
 }
 
 .changelog-date-container {
