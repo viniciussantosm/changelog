@@ -171,9 +171,8 @@ class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_C
         if($this->checkCache("categoryCollection")) {
             return unserialize(Mage::app()->getCache()->load("categoryCollection"));
         }
-        $resource = $this->loadData();
-        $this->saveCache($resource, "categoryCollection", [Mage_Core_Model_Config::CACHE_TAG]);
-        return $resource;
+        $this->saveCache($this, "categoryCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        return $this;
     }
     
     public function saveCache($data, $key, $tag)

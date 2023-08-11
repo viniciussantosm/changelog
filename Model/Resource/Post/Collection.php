@@ -177,9 +177,8 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
         if($this->checkCache("postCollection")) {
             return unserialize(Mage::app()->getCache()->load("postCollection"));
         }
-        $resource = $this->loadData();
-        $this->saveCache($resource, "postCollection", [Mage_Core_Model_Config::CACHE_TAG]);
-        return $resource;
+        $this->saveCache($this, "postCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        return $this;
     }
     
     public function saveCache($data, $key, $tag)

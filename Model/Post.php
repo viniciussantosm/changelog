@@ -12,6 +12,7 @@ class BIS2BIS_Changelog_Model_Post extends Varien_Object{
     public function _construct(){
         $categories = Mage::getModel("changelog/category")
             ->getCollection()
+            ->getResource()
             ->addFilter("include", implode(",", parent::getCategories()));
         $this->categories = $categories;
     }

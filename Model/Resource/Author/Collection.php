@@ -178,9 +178,8 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
         if($this->checkCache("authorCollection")) {
             return unserialize(Mage::app()->getCache()->load("authorCollection"));
         }
-        $resource = $this->loadData();
-        $this->saveCache($resource, "authorCollection", [Mage_Core_Model_Config::CACHE_TAG]);
-        return $resource;
+        $this->saveCache($this, "authorCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        return $this;
     }
     
     public function saveCache($data, $key, $tag)

@@ -12,6 +12,7 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Adminhtml_Block_D
     {
         $collection = Mage::getModel("changelog/post")
             ->getCollection()
+            ->getResource()
             ->addFilter("per_page", 5)
             ->addFilter("categories", implode(",", $this->getConfig()->getActiveCategory()))
             ->addFilter("orderby", "modified")
