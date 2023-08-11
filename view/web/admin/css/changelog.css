@@ -28,6 +28,11 @@ tbody tr td:hover {
     color: #fff;
 }
 
+.changelog-title:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
 .changelog-content-container {
     overflow-x: hidden;
     overflow-y: auto;

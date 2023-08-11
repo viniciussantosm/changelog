@@ -22,7 +22,8 @@ class BIS2BIS_Changelog_Block_Adminhtml_Column_Renderer_Updates extends Mage_Adm
             $row->getLink());
         
         return sprintf(
-            '<div class="changelog-title-container"><p class="changelog-title">%s</p></div><div class="changelog-content-container"><div class="changelog-content">%s%s</div></div><div class="changelog-info-container"><div class="changelog-category-container">%s</div><div class="changelog-date-container"><b>%s</b></div></div>',
+            '<div class="changelog-title-container"><a href="%s" target="_blank" class="changelog-title">%s</a></div><div class="changelog-content-container"><div class="changelog-content">%s%s</div></div><div class="changelog-info-container"><div class="changelog-category-container">%s</div><div class="changelog-date-container"><b>%s</b></div></div>',
+            $row->getLink(),
             ucwords($row->getData("title/rendered")),
             print_r($rowContent, true),
             $showMoreLink,
