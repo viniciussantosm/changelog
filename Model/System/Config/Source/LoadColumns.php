@@ -6,7 +6,6 @@ class BIS2BIS_Changelog_Model_System_Config_Source_LoadColumns {
     {
         return [
             ["value" => "updates", "label" => "Atualizações"],
-            ["value" => "author", "label" => "Autor"],
         ];
     }
 

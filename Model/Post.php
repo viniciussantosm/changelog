@@ -10,8 +10,6 @@ class BIS2BIS_Changelog_Model_Post extends Varien_Object{
     }
 
     public function _construct(){
-        $author = Mage::getModel("changelog/author")->load(parent::getAuthor());
-        $this->author = $author;
         $categories = Mage::getModel("changelog/category")
             ->getCollection()
             ->addFilter("include", implode(",", parent::getCategories()));

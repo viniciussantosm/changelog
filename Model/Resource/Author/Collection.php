@@ -155,7 +155,7 @@ class BIS2BIS_Changelog_Model_Resource_Author_Collection extends Varien_Data_Col
         }
         
         $url = sprintf(
-            "https://%s/wp-json/wp/v2/users%s",
+            "%s/wp-json/wp/v2/users%s",
             $this->getConfig()->getBlogUrl(),
             empty($params) ? "" : "?" . http_build_query($params)
         );

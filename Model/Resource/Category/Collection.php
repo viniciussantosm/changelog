@@ -154,7 +154,7 @@ class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_C
         }
 
         $url = sprintf(
-            "https://%s/wp-json/wp/v2/categories%s",
+            "%s/wp-json/wp/v2/categories%s",
             $this->getConfig()->getBlogUrl(),
             empty($params) ? "" : "?" . http_build_query($params)
         );
