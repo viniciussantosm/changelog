@@ -5,8 +5,8 @@ class BIS2BIS_Changelog_Model_System_Config_Source_LoadColumns {
     public function toOptionArray()
     {
         return [
-            ["value" => "title", "label" => "Title"],
-            ["value" => "author", "label" => "Author"],
+            ["value" => "updates", "label" => "Atualizações"],
+            ["value" => "author", "label" => "Autor"],
         ];
     }
 

@@ -16,15 +16,6 @@
                 </rewrite>
             </adminhtml>
         </blocks>
-        <cache>
-            <types>
-                <custom translate="label,description" module="module">
-                    <label>Changelog</label>
-                    <description>Changelog module cache</description>
-                    <tags>CHANGELOG</tags>
-                </custom >
-            </types>
-        </cache>
         <helpers>
             <changelog>
                 <class>BIS2BIS_Changelog_Helper</class>
