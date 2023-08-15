@@ -2,6 +2,8 @@
 
 class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_Collection {
 
+    const CATEGORY_COLLECTION = "categoryCollection";
+
     /**
      * Item object class name
      *
@@ -168,10 +170,10 @@ class BIS2BIS_Changelog_Model_Resource_Category_Collection extends Varien_Data_C
 
     public function getResource()
     {
-        if($this->checkCache("categoryCollection")) {
-            return unserialize(Mage::app()->getCache()->load("categoryCollection"));
+        if($cache = $this->checkCache(self::CATEGORY_COLLECTION)) {
+            return unserialize($cache);
         }
-        $this->saveCache($this, "categoryCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        $this->saveCache($this, self::CATEGORY_COLLECTION, [Mage_Core_Model_Config::CACHE_TAG]);
         return $this;
     }
     

@@ -2,6 +2,8 @@
 
 class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Collection {
 
+    const POST_COLLECTION = "postCollection";
+
     /**
      * Item object class name
      *
@@ -26,6 +28,7 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
         }
 
         foreach ($items as $item) {
+            $item["content"] = $item["excerpt"]["rendered"];
             $this->addItem((new BIS2BIS_Changelog_Model_Post($item)));
         }
         $this->_renderFilters();
@@ -174,10 +177,10 @@ class BIS2BIS_Changelog_Model_Resource_Post_Collection extends Varien_Data_Colle
 
     public function getResource()
     {
-        if($this->checkCache("postCollection")) {
-            return unserialize(Mage::app()->getCache()->load("postCollection"));
+        if($cache = $this->checkCache(self::POST_COLLECTION)) {
+            return unserialize($cache);
         }
-        $this->saveCache($this, "postCollection", [Mage_Core_Model_Config::CACHE_TAG]);
+        $this->saveCache($this, self::POST_COLLECTION, [Mage_Core_Model_Config::CACHE_TAG]);
         return $this;
     }
     

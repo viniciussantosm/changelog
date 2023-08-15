@@ -1,13 +1,7 @@
 <?php
 
 class BIS2BIS_Changelog_Model_Post extends Varien_Object{
-
-    private $author;
     private $categories;
-
-    public function getGeneric($field){
-        return $this->getData($field);
-    }
 
     public function _construct(){
         $categories = Mage::getModel("changelog/category")
