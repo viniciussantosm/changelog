@@ -18,16 +18,6 @@ class BIS2BIS_Changelog_Helper_Config extends Mage_Core_Helper_Abstract {
         return Mage::getStoreConfig("changelog/settings/url");
     }
 
-    public function getWpUser()
-    {
-        return Mage::getStoreConfig("changelog/settings/wplogin");
-    }
-
-    public function getWpPass()
-    {
-        return Mage::getStoreConfig("changelog/settings/wppassword");
-    }
-
     public function getActiveColumns()
     {
         return Mage::getStoreConfig("changelog/settings/gridoptions");
