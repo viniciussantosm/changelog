@@ -2,9 +2,6 @@
 <config>
     <acl>
         <resources>
-            <all>
-                <title>Allow Everything</title>
-            </all>
             <admin>
                 <children>
                     <system>
@@ -12,7 +9,7 @@
                             <config>
                                 <children>
                                     <changelog translate="title">
-                                        <title>Settings</title>
+                                        <title>Changelog</title>
                                     </changelog>
                                 </children>
                             </config>
