@@ -1,0 +1,6 @@
+<?php foreach($this->getPostsCollection() as $post): ?>
+    <div class="changelog-title-container"><a href="<?= $post->getData("link"); ?>" target="_blank" class="changelog-title"><?= $post->getData("title/rendered"); ?></a></div>
+    <div class="changelog-content"><?=$post->getData("content");?></div>
+    <div class="changelog-category-container"><p><?=implode(" / ", $post->getCategories()->getColumnValues("name"));?></p></div><div class="changelog-date-container"><p><?=$this->treatDate($post->getData("modified"))?></p></div>
+    <div class="changelog-see-more-container"><a class="see-more-link" href="<?=$post->getData("link")?>" target="_blank"><?=$this->__("See news")?></a></div>
+<?php endforeach; ?>
