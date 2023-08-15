@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <layout>
-    <default>
+    <adminhtml_dashboard_index>
         <reference name="head">
             <action method="addCss"><stylesheet>BIS2BIS_Changelog::web/admin/css/changelog.css</stylesheet></action>
         </reference>
-    </default>
-</layout> 
+    </adminhtml_dashboard_index>
+</layout>
