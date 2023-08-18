@@ -3,11 +3,6 @@
     table-layout: fixed;
 }
 
-tbody tr td {
-    padding: 0!important;
-    cursor: pointer;
-}
-
 .changelog-title-container {
     text-align: left;
     background-color: #bbb;
