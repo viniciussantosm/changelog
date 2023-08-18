@@ -12,12 +12,12 @@
 2- Add the following code to the composer.json:
 ``` 
 "require": {
-        "viniciussantosm/changelog_module": "master"
+        "viniciussantosm/changelog": "master"
 }
 "repositories": {
-        "changelog_module": {
+        "changelog": {
             "type": "vcs",
-            "url": "git@github.com:viniciussantosm/changelog_module.git"
+            "url": "git@github.com:viniciussantosm/changelog.git"
         },
 }
 ```
