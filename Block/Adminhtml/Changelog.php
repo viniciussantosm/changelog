@@ -17,6 +17,14 @@ class BIS2BIS_Changelog_Block_Adminhtml_Changelog extends Mage_Core_Block_Templa
         return $collection;
     }
 
+    public function getLogsCollection()
+    {
+        $collection = Mage::getModel("changelog/log")
+            ->getCollection();
+
+        return $collection;
+    }
+
     /**
      * @return BIS2BIS_Changelog_Helper_Config
      */

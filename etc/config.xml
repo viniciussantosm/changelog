@@ -24,8 +24,40 @@
         <models>
             <changelog>
                 <class>BIS2BIS_Changelog_Model</class>
+                <resourceModel>changelog_resource</resourceModel>
             </changelog>
+            <changelog_resource>
+                <class>BIS2BIS_Changelog_Model_Resource</class>
+                <entities>
+                    <log>
+                        <table>changelog_logs</table>
+                    </log>
+                </entities>
+            </changelog_resource>
         </models>
+        <!-- R E S O U R C E S -->
+        <resources>
+            <changelog_setup>
+                <setup>
+                    <module>BIS2BIS_Changelog</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </changelog_setup>
+            <changelog_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </changelog_write>
+            <changelog_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </changelog_read>
+        </resources>
+        <!-- R E S O U R C E S -->
     </global>
     <adminhtml>
         <translate>
