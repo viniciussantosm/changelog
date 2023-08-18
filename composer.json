@@ -10,5 +10,6 @@
         "classmap": [
             "."
         ]
-    }
+    },
+    "minimum-stability": "dev"
 }
